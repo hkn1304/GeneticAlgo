@@ -1,8 +1,9 @@
 #include "GeneticAlgo.h"
 #include <vector>
-#include <random>
+#include <random> // For random number generator
 #include <ctime>
 #include <cstdlib>
+#include <stdexcept> // For std::runtime_error
 
 using namespace std;
 
@@ -75,6 +76,7 @@ void GeneticAlgo::printpopulation()const{
 void GeneticAlgo::printpopulation(int index, int nind)const{ 
     vector<vector<double>>::const_iterator iterPop = population.begin();
     advance(iterPop,index);
+
     vector<double>::const_iterator iter = iterPop->begin();
     advance(iter,nind);
     cout << *iter << " ";
@@ -85,17 +87,70 @@ void GeneticAlgo::mutation(){
     srand(static_cast<unsigned>(time(nullptr)));
 
     double rateMutation= getMutationRate();
-    // int number_mutation= static_cast<int>(rateMutation*dim_population*num_population);
-        int number_mutation= rateMutation*dim_population*num_population;
-    for (int i=0; i < number_mutation; i++ ) {
-        int index = rand() % num_population;
-        cout << index << " ";
-        int nind = rand() % dim_population;
-        cout << nind << " ";
-        printpopulation(index,nind);
-        setpopulation(index, nind);
-        printpopulation(index,nind);
+    int number_mutation= static_cast<int>(rateMutation*dim_population*num_population);
+    
+    try
+    {
+        if (number_mutation < 1){
+            throw runtime_error("No mutation happened, less than 1");
+        }
+            for (int i=0; i < number_mutation; i++ ) {
+                int index = rand() % num_population;
+                cout << index << " ";
+                int nind = rand() % dim_population;
+                cout << nind << " ";
+                //printpopulation(index,nind); // Before Mutation
+                setpopulation(index, nind);
+                //printpopulation(index,nind); // After Mutation
+                cout << endl;
+            }
+        
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    // printpopulation();
+};
+
+void GeneticAlgo::crossover(){
+    random_device rd;
+    mt19937 gen(rd());
+
+    uniform_int_distribution<> distPop(0, num_population - 1);
+    uniform_int_distribution<> distDim(0, dim_population - 1);
+
+    double rateCrossover= getCrossoverRate();
+    int number_crossover= static_cast<int>(rateCrossover*dim_population*num_population);
+
+        try
+    {
+        if (number_crossover < 1){
+            throw runtime_error("No Crossover happened, less than 1");
+        }
+
+        for (int i=0; i < number_crossover; i++ ) {
+
+        // Create a random number from uniform distribution
+        int index = distPop(gen), nind = distDim(gen);
+        cout << index << " "; cout << nind << " ";
+        int index2 = distPop(gen), nind2 = distDim(gen);
+        cout << index2 << " "; cout << nind2 << " ";
+
+        //printpopulation(index,nind); // Before Mutation
+        //printpopulation(index2,nind2); // Before Mutation
+        swap(population[index][nind],population[index2][nind2]);
+        //printpopulation(index,nind); // After Mutation
+        //printpopulation(index2,nind2); // Before Mutation
         cout << endl;
     }
-    // printpopulation();
+        
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+
 };

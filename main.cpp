@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 
-GeneticAlgo genalg(20, 5, 10.0, 100.0, 0.05, 0.05);
+GeneticAlgo genalg(5, 1, 10.0, 100.0, 0.05, 0.05);
 //genalg.printpopulation();
 cout << endl;
 //genalg.getpopulation(3);
@@ -22,5 +22,7 @@ genalg.mutation();
 genalg.printpopulation();
 //cout << "Random number between " ;//<< lower_bound << "and " <<upper_bound << ": " << random_number <<"\n";
 
+genalg.crossover();
+genalg.printpopulation();
     return 0;
 }

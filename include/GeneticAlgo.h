@@ -17,8 +17,8 @@ class GeneticAlgo
         double up_bound;
         double mutation_rate;
         double crossover_rate;
+        // std::mt19937 gen;
 
-        vector<double> generate_random_numbers(double , double , int );
 
         void createPopulationArray(int size, int dimension,double low_bound, double up_bound, double mutation_rate, double crossover_rate)
         {
@@ -45,11 +45,14 @@ class GeneticAlgo
 
         vector<double> getpopulation (int ) const;
         double getMutationRate () const{ return mutation_rate; };
+        double getCrossoverRate () const{ return crossover_rate; };
+        vector<double> generate_random_numbers(double , double , int); 
         void setpopulation (int, int);
         void printpopulation()const;
         void printpopulation(int index, int nind)const;
         vector<double> setpopulationUser (int );
         void mutation();
+        void crossover();
 
         ~GeneticAlgo()
         { }
