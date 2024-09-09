@@ -1,5 +1,7 @@
 #include "GeneticAlgo.h"
 #include <vector>
+#include <map>
+#include <functional>
 #include <random> // For random number generator
 #include <ctime>
 #include <cstdlib>
@@ -83,7 +85,7 @@ void GeneticAlgo::printpopulation(int index, int nind)const{
 };
 
 void GeneticAlgo::mutation(){
-        // Seed random number generator
+    // Seed random number generator
     srand(static_cast<unsigned>(time(nullptr)));
 
     double rateMutation= getMutationRate();
@@ -138,11 +140,9 @@ void GeneticAlgo::crossover(){
         int index2 = distPop(gen), nind2 = distDim(gen);
         cout << index2 << " "; cout << nind2 << " ";
 
-        //printpopulation(index,nind); // Before Mutation
-        //printpopulation(index2,nind2); // Before Mutation
+        //printpopulation(index,nind); //printpopulation(index2,nind2); // Before Mutation
         swap(population[index][nind],population[index2][nind2]);
-        //printpopulation(index,nind); // After Mutation
-        //printpopulation(index2,nind2); // Before Mutation
+        //printpopulation(index,nind); printpopulation(index2,nind2); // After Mutation
         cout << endl;
     }
         
@@ -151,6 +151,4 @@ void GeneticAlgo::crossover(){
     {
         std::cerr << e.what() << '\n';
     }
-    
-
 };
