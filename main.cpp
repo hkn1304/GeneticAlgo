@@ -14,9 +14,13 @@ if (iterPop.empty() || iterPop.empty()) return 0; // Handle empty vectors approp
 
 int main(){
 
-GeneticAlgo genalg(10, 4, 10.0, 100.0, 0.05, 0.05, 0.20);
+GeneticAlgo genalg(10, 4, 10.0, 100.0, 0.05, 0.05, 0.20, 0.001);
+genalg.evolve(100, max_func);
+    return 0;
+}
+
 //genalg.printpopulation();
-cout << endl;
+//cout << endl;
 //genalg.getpopulation(3);
 // cout << endl;
 // genalg.printpopulation();
@@ -27,12 +31,11 @@ cout << endl;
 // genalg.getpopulation(2);
 
 // Pass the arbitrary fitness function as functor via:
-genalg.fitness_func(max_func);
+//genalg.fitness_func(max_func);
+
 // genalg.mutation();
 //genalg.printpopulation();
-
+// genalg.selectElite();
 
 // genalg.crossover();
 // genalg.printpopulation();
-    return 0;
-}
