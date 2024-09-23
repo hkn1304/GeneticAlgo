@@ -67,7 +67,6 @@ void GeneticAlgo::printpopulation()const{
         cout << "Population " << index << ": ";
         vector<double>::const_iterator iter;
             for (iter = iterPop->begin(); iter != iterPop->end();iter++ ) {
-                //int ind = distance(iterPop->begin(), iter);
                 cout << *iter << " ";
             }
             cout << endl;
@@ -82,6 +81,21 @@ void GeneticAlgo::printpopulation(int index, int nind)const{
     vector<double>::const_iterator iter = iterPop->begin();
     advance(iter,nind);
     cout << *iter << " ";
+};
+
+void GeneticAlgo::printnextgen()const{ 
+    vector<vector<double>>::const_iterator iterPop;
+    for (iterPop = nextgen.begin(); iterPop != nextgen.end();iterPop++){
+        int index = distance(nextgen.begin(), iterPop);
+        cout << "Next Gen: " << index << ": ";
+        vector<double>::const_iterator iter;
+            for (iter = iterPop->begin(); iter != iterPop->end();iter++ ) {
+                //int ind = distance(iterPop->begin(), iter);
+                cout << *iter << " ";
+            }
+            cout << endl;
+    }
+    
 };
 
 void GeneticAlgo::mutation(){
@@ -152,3 +166,27 @@ void GeneticAlgo::crossover(){
         std::cerr << e.what() << '\n';
     }
 };
+
+
+void GeneticAlgo::selectElite(){
+
+    int number_elite= static_cast<int>(percent_elite*num_population);
+    int i=0;
+
+    std::multimap<double, std::vector<double>, std::greater<double>>::iterator iterMap;
+    nextgen.clear();  // Clear the previous nextgen data to avoid appending
+
+    // Ensure that nextgen has the same number of individuals as population_score
+    for (iterMap = population_score.begin(); iterMap != population_score.end() && i < num_population; iterMap++, i++) {
+        if (i < number_elite) {
+            // Add elite individuals to nextgen
+            nextgen.push_back(iterMap->second);
+        } else {
+            // Generate new individuals to fill the remaining population
+            nextgen.push_back(generate_random_numbers(low_bound, up_bound, dim_population));
+        }
+    }
+    printnextgen();
+};
+
+
